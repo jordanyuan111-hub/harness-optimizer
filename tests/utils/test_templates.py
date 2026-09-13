@@ -26,4 +26,6 @@ def test_sandbox_still_blocks_attribute_escapes():
 def test_builtin_templates_load():
     names = list_builtin_templates()
     assert "skill_library/task_message.jinja" in names
+    assert "multi_surface/task_message.jinja" in names
     load_builtin_template("skill_library/system_prompt.jinja")
+    load_builtin_template("multi_surface/system_prompt.jinja")
