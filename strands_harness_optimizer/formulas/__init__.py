@@ -5,6 +5,7 @@ from .formula import Formula
 from .skill_formula import SkillFormula
 from .skill_library_formula import SkillLibraryFormula
 from .system_prompt_formula import SystemPromptFormula
+from .tool_description_formula import ToolDescriptionFormula
 
 __all__ = [
     "Formula",
@@ -12,4 +13,5 @@ __all__ = [
     "ContextExpansionFormula",
     "SkillFormula",
     "SkillLibraryFormula",
+    "ToolDescriptionFormula",
 ]

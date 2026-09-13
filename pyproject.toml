@@ -28,6 +28,7 @@ dependencies = [
     "strands-agents-tools>=0.1.0",
     "jinja2>=3.0.0",
     "botocore>=1.30.0",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]
