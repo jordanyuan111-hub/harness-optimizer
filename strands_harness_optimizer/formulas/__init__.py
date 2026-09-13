@@ -2,6 +2,7 @@
 
 from .context_expansion_formula import ContextExpansionFormula
 from .formula import Formula
+from .multi_surface_formula import MultiSurfaceFormula
 from .skill_formula import SkillFormula
 from .skill_library_formula import SkillLibraryFormula
 from .system_prompt_formula import SystemPromptFormula
@@ -14,4 +15,5 @@ __all__ = [
     "SkillFormula",
     "SkillLibraryFormula",
     "ToolDescriptionFormula",
+    "MultiSurfaceFormula",
 ]

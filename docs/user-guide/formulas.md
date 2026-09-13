@@ -55,6 +55,34 @@ A name not in `base` or a description over 800 characters is dropped with a warn
 
 For in-process agents the strands adapter patches each named tool's spec in place — `mcp_tool.description` for MCP tools, the `tool_spec` dict for `@tool` functions — and checks at attach time that the agent exposes that seam. Remote agents receive the overrides as a `tool_descriptions` payload key and patch on their side.
 
+## Using MultiSurfaceFormula
+
+`MultiSurfaceFormula` is one formula over the three surfaces an agent reads: the system prompt, the skill library and the tool descriptions. It wraps a `SystemPromptFormula`, a `SkillLibraryFormula` and a `ToolDescriptionFormula`, merges their tunable parameters, and routes `update_params` to whichever members the params name. A surface with no key in the update is left untouched.
+
+```python
+from strands_harness_optimizer.formulas import (
+    MultiSurfaceFormula, SkillLibraryFormula, SystemPromptFormula, ToolDescriptionFormula,
+)
+
+formula = MultiSurfaceFormula(
+    system_prompt=SystemPromptFormula(system_prompt="You are a shopping agent."),
+    skills=SkillLibraryFormula(skill_dir="./skills"),          # None for a cold start
+    tool_descriptions=ToolDescriptionFormula(base={"search": "...", "click": "..."}),
+)
+formula.get_tunable_params()
+# {'system_prompt': '...', 'skill_dir': './skills', 'tool_descriptions': {}}
+
+# An optimizer that edited the prompt, wrote skill decisions, and edited one tool:
+formula.update_params({
+    "system_prompt": "...",
+    "decisions_dir": "./runs/step_0001/skills",
+    "tool_descriptions": {"search": "..."},
+})
+formula.materialize("./runs/step_0001/skill_set")   # delegates to the skill member
+```
+
+The members stay reachable as `formula.system_prompt`, `formula.skills` and `formula.tool_descriptions`. Attached to an in-process agent, `process` runs the members in order and returns only the keys that changed, so the adapter writes back exactly what moved.
+
 ## Creating a Custom Formula
 
 Subclass `Formula` and implement the abstract methods:
